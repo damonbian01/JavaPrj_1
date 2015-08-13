@@ -29,6 +29,11 @@ public class GetMessageList extends HttpServlet {
 		
 		MessageDAO messageDAO = MessageDAOFactory.getMessageAOInstance();
 		Page page = PageUtil.createPage(5, messageDAO.findAllCount(), currentPage);
+		//edit by damonbian
+		if(page.getCurrentPage() > page.getTotalPage() || page.getCurrentPage() < 0) {
+			page = PageUtil.createPage(5, messageDAO.findAllCount(), page.getTotalPage());
+		}
+		
 		List<Message> messages = messageDAO.findAllMessagee(page);
 		request.setAttribute("messageList", messages);
 		request.setAttribute("page", page);

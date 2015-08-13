@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="gbk"%>
 <%@ taglib  prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page import="com.sanqing.util.Page"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -55,6 +56,28 @@
 			首页 | 上一页
 		</c:otherwise>
 	</c:choose>
+	
+	<!-- add by damonbian -->
+	
+	<% 	Page currentPage = (Page)request.getAttribute("page");
+		int start = (currentPage.getCurrentPage()-3)>0?currentPage.getCurrentPage()-3:1;
+		int end = start+4;
+		if((start+4) > currentPage.getTotalPage()) {
+			end = currentPage.getTotalPage();
+			start = (end-4)>0?(end-4):1;			
+		}
+		for(int i = start;i < end+1;i++) {
+			if(i == currentPage.getCurrentPage()) {
+				%>
+				<%=i %><%}
+			else {
+				%>
+				<a href="GetMessageList?currentPage=<%=i %>"><%=i %></a>
+				<%
+			}
+		}
+	%>	
+	
 	<c:choose>
 		<c:when test="${page.hasNextPage}">
 			<a href="GetMessageList?currentPage=${page.currentPage + 1 }">下一页</a> | 

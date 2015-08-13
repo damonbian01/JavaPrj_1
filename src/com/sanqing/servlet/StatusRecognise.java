@@ -2,6 +2,8 @@ package com.sanqing.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -26,29 +28,38 @@ public class StatusRecognise extends HttpServlet {
 			dispatcher = servletContext.
 					getRequestDispatcher("/statusRecognise.jsp");//设置跳转页面
 		}else {
-			if(password == null || "".equals(password)) {		//判断是否输入系统密码
-				request.setAttribute("error", "请输入系统口令!");
+			//add by damonbian
+			Pattern pattern = Pattern.compile("[0-9]*");
+			Matcher isNum = pattern.matcher(employeeID);
+			if(!isNum.matches()) {
+				request.setAttribute("error", "请输入正确的员工编号！");
 				dispatcher = servletContext.
-					getRequestDispatcher("/statusRecognise.jsp");//设置跳转页面
+						getRequestDispatcher("/statusRecognise.jsp");//设置跳转页面
 			}else {
-				EmployeeDAO employeeDAO = 
-					EmployeeDAOFactory.getEmployeeDAOInstance();//获得DAO实现类实例
-				Employee employee = employeeDAO.
-					findEmployeeById(Integer.parseInt(employeeID));//查询员工
-				if(employee == null) {
-					request.setAttribute("error", "该员工编号不存在!");
+				if(password == null || "".equals(password)) {		//判断是否输入系统密码
+					request.setAttribute("error", "请输入系统口令!");
 					dispatcher = servletContext.
-						getRequestDispatcher("/statusRecognise.jsp");
-				} else {
-					if(password.equals(employee.getPassword())) {
-						request.getSession().
-							setAttribute("employee", employee);//将员工信息保存到session范围
-						response.sendRedirect("index.jsp");
-						return;
-					} else {
-						request.setAttribute("error", "系统口令不正确!");
+						getRequestDispatcher("/statusRecognise.jsp");//设置跳转页面
+				}else {
+					EmployeeDAO employeeDAO = 
+						EmployeeDAOFactory.getEmployeeDAOInstance();//获得DAO实现类实例
+					Employee employee = employeeDAO.
+						findEmployeeById(Integer.parseInt(employeeID));//查询员工
+					if(employee == null) {
+						request.setAttribute("error", "该员工编号不存在!");
 						dispatcher = servletContext.
 							getRequestDispatcher("/statusRecognise.jsp");
+					} else {
+						if(password.equals(employee.getPassword())) {
+							request.getSession().
+								setAttribute("employee", employee);//将员工信息保存到session范围
+							response.sendRedirect("index.jsp");
+							return;
+						} else {
+							request.setAttribute("error", "系统口令不正确!");
+							dispatcher = servletContext.
+								getRequestDispatcher("/statusRecognise.jsp");
+						}
 					}
 				}
 			}

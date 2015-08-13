@@ -4,6 +4,11 @@ package com.sanqing.util;
  */
 public class PageUtil {
 	public static Page createPage(int everyPage,int totalCount,int currentPage) {//创建分页信息对象
+		/**
+		 * edit by damonbian
+		 * everyPage should be read from conf.xml
+		 */
+		everyPage = XmlReader.getEveryPage();
 		everyPage = getEveryPage(everyPage);
 		currentPage = getCurrentPage(currentPage);
 		int totalPage = getTotalPage(everyPage, totalCount);

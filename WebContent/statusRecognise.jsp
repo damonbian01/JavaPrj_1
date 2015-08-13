@@ -31,7 +31,8 @@
  		 <h1>员工身份识别</h1>
 		</div>
 		<div id="shenfenshibie">
-			<font color="red">${requestScope.error }</font>
+			<!-- <font color="red">${requestScope.error }</font> -->
+			<font color="red">${error }</font>
 			<form action="StatusRecogniseAction" method="post">
 		  	<p>员工编号：<input type="text" name="employeeID" value="${param.employeeID}"/></p>
 		  	<p>&nbsp;</p>

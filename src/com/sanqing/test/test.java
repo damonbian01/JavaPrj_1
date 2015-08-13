@@ -1,12 +1,12 @@
 package com.sanqing.test;
 
-import com.sanqing.util.PageUtil;
+import com.sanqing.util.XmlReader;
+
 
 public class test {
 
 	public static void main(String[] args) {
-		System.out.println(PageUtil.getEveryPage(0));
-
+		System.out.println(XmlReader.getEveryPage());
 	}
 
 }
